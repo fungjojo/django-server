@@ -7,6 +7,7 @@ from .serializers import CertSerializer
 from .models import Cert
 import subprocess
 import os
+import logging
 
 
 # from .mixin import CertMixin
@@ -30,8 +31,10 @@ class CertView(viewsets.ModelViewSet):
                 ["sh", "../test.sh"],
                 stdout=subprocess.PIPE,
             )
+            logging.info("???? log print var =")
+            # logging.info("???? log print var =%s", var.communicate())
             print("???? print var")
-            print(var.communicate())
+            # print(var.communicate())
 
         return self.queryset.all()
 
