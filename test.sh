@@ -54,16 +54,24 @@ cd ../..
 
 echo "start time:"
 echo $(date +"%Y-%m-%dT%T.%3N%z")
-# docker build -t bc/cert-issuer:1.0 .
-docker run --name test1 -d bc/cert-issuer:1.0
-docker logs test1 -f > log.txt
 
-while [ true ]
-do
-    if grep -q "print log" log.txt; then
-        echo "Issue cert done"
-        echo "end time:"
-        echo $(date +"%Y-%m-%dT%T.%3N%z")
-        exit 0
-    fi
-done
+echo "??? before sleep"
+sleep 35
+echo "??? after sleep"
+echo "end time:"
+echo $(date +"%Y-%m-%dT%T.%3N%z")
+# docker build -t bc/cert-issuer:1.0 .
+# docker run --name test1 -d bc/cert-issuer:1.0
+# docker start test1
+# docker logs test1 -f > log.txt
+
+# while [ true ]
+# do
+#     if grep -q "print log" log.txt; then
+#         echo "Issue cert done"
+#         echo "end time:"
+#         echo $(date +"%Y-%m-%dT%T.%3N%z")
+#         rm -rf log.txt
+#         exit 0
+#     fi
+# done
