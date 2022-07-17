@@ -63,7 +63,7 @@ echo "end time:"
 echo $(date +"%Y-%m-%dT%T.%3N%z")
 # docker build -t bc/cert-issuer:1.0 .
 sudo sh -c "truncate -s 0 /var/lib/docker/containers/*/*-json.log"
-docker run -e ENV_NONCE=12 --name test1 -d bc/cert-issuer:1.0
+docker run -e ENV_NONCE=13 --rm --name test1 -d bc/cert-issuer:1.0
 # docker start test1
 docker logs test1 -f > log.txt
 docker rm --name test1
