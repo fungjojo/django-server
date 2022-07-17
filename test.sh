@@ -61,7 +61,7 @@ echo $(date +"%Y-%m-%dT%T.%3N%z")
 # echo "??? after sleep"
 echo "end time:"
 echo $(date +"%Y-%m-%dT%T.%3N%z")
-docker build -t bc/cert-issuer:1.0 .
+# docker build -t bc/cert-issuer:1.0 .
 docker run --name test1 -d bc/cert-issuer:1.0
 docker start test1
 docker logs test1 -f > log.txt
