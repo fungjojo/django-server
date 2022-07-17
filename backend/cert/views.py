@@ -31,7 +31,9 @@ class CertView(viewsets.ModelViewSet):
                 ["sh", "../test.sh"],
                 stdout=subprocess.PIPE,
             )
-            logging.info("???? log print var =")
+            output = var.communicate()
+            logging.info("???? log print")
+            logging.info("???? log print output =%s", output)
             # logging.info("???? log print var =%s", var.communicate())
             print("???? print var")
             # print(var.communicate())
