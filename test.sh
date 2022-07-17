@@ -57,6 +57,7 @@ echo $(date +"%Y-%m-%dT%T.%3N%z")
 
 echo "??? before sleep"
 sleep 35
+touch sleep.txt
 echo "??? after sleep"
 echo "end time:"
 echo $(date +"%Y-%m-%dT%T.%3N%z")
