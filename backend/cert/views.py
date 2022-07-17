@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from .serializers import CertSerializer
 from .models import Cert
 import subprocess
+import os
 
 
 # from .mixin import CertMixin
@@ -23,9 +24,10 @@ class CertView(viewsets.ModelViewSet):
 
         if query_id:
             print(query_id)
-            # subprocess.call("/Users/joanne/Desktop/django-test/test.sh")
+            ROOT_DIR = os.path.abspath(os.curdir)
+            print(ROOT_DIR)
             var = subprocess.Popen(
-                ["sh", "/Users/joanne/Desktop/django-test/test.sh"],
+                ["sh", "../test.sh"],
                 stdout=subprocess.PIPE,
             )
             print("???? print var")
