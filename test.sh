@@ -67,7 +67,8 @@ sudo sh -c "truncate -s 0 /var/lib/docker/containers/*/*-json.log"
 docker run -e ENV_NONCE=$1 --rm --name test1 -d bc/cert-issuer:1.0
 # docker start test1
 # docker logs test1 -f > log.txt
-docker logs test1 >& docker_log.txt
+# docker logs test1 -f >& docker_log.txt
+docker logs test1 -f > docker_log.txt 2>&1
 docker rm --name test1
 
 # while [ true ]
