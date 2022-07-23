@@ -1,45 +1,43 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework import status
 from rest_framework.response import Response
 
 from .serializers import CertSerializer
 from .models import Cert
 import subprocess
-import os
-import logging
 
-
-# from .mixin import CertMixin
+# import os
 
 # Create your views here.
 class CertView(viewsets.ModelViewSet):
-    # class CertView(CertMixin, viewsets.ModelViewSet):
     queryset = Cert.objects.all()
     serializer_class = CertSerializer
 
-    def get_queryset(self):
-        # print("???? query set")
-        # print(self.request.GET)
-        query_id = self.kwargs["pk"]
+    def create(self, request):
 
-        if query_id:
-            print(query_id)
-            ROOT_DIR = os.path.abspath(os.curdir)
-            print(ROOT_DIR)
-            var = subprocess.Popen(
-                ["sh", "../test.sh"],
-                stdout=subprocess.PIPE,
-            )
-            output = var.communicate()
-            logging.info("???? log print")
-            logging.info("???? log print output =%s", output)
-            # logging.info("???? log print var =%s", var.communicate())
-            print("???? print var")
-            # print(var.communicate())
+        # get latest nonce
+        query_results = Cert.objects.latest("nonce")
+        latest_nonce = query_results.nonce
+        print("latest nonce=%s", latest_nonce)
 
-        return self.queryset.all()
+        # issue cert
+        # ROOT_DIR = os.path.abspath(os.curdir)
+        # print("ROOT_DIR=%s", ROOT_DIR)
+        var = subprocess.Popen(
+            ["sh", "../test.sh", str(latest_nonce)],
+            stdout=subprocess.PIPE,
+        )
+        output = var.communicate()
+        print("???? output =%s", output)
 
-    # CertMixin.gen_cert()
-    # serializer_class = CertSerializer
-    # queryset = Cert.objects.all()
+        # POST and update serializer
+        newData = request.POST.copy()
+        newData["nonce"] = 11
+        newData["nonce"] = latest_nonce + 1
+
+        print("???? newData =%s", newData)
+        serializer = self.get_serializer(data=newData)
+        serializer.is_valid(raise_exception=True)
+        super().perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=200, headers=headers)

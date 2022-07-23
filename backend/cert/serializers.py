@@ -10,4 +10,4 @@ class CertSerializer(serializers.ModelSerializer):
     #     return Model.obj
     class Meta:
         model = Cert
-        fields = ("id", "certDataString", "lastUpdatedAt")
+        fields = ("id", "certDataString", "lastUpdatedAt", "nonce")

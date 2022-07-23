@@ -17,6 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.CharField(max_length=120, primary_key=True, serialize=False)),
                 ('certDataString', models.CharField(max_length=30000)),
                 ('lastUpdatedAt', models.DateTimeField()),
+                ('nonce', models.IntegerField()),
             ],
         ),
     ]
