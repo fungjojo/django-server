@@ -122,6 +122,9 @@
   `ps aux | grep gunicorn`
   `kill -9 [pid]`
 
+- if updated code, refresh in server
+  `sudo systemctl restart gunicorn`
+
 # NGINX Error log for troubleshoot problem 2
 
 2022/07/10 13:20:00 [notice] 2698#2698: using inherited sockets from "6;7;"
