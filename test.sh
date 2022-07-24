@@ -67,8 +67,8 @@ sudo sh -c "truncate -s 0 /var/lib/docker/containers/*/*-json.log"
 docker run -e ENV_NONCE=$1 --rm --name test1 -d bc/cert-issuer:1.0
 # docker start test1
 docker logs test1 -f > /tmp/docker_log.log
-cat /etc/cert-issuer/data/blockchain_certificates/test1.json
-cp /etc/cert-issuer/data/blockchain_certificates/test1.json /tmp/test1.json
+# cat /etc/cert-issuer/data/blockchain_certificates/test1.json
+docker cp test1:/etc/cert-issuer/data/blockchain_certificates/* /tmp/signed_cert
 docker rm --name test1
 
 # while [ true ]
