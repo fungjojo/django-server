@@ -26,6 +26,12 @@ class CertView(viewsets.ModelViewSet):
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=200, headers=headers)
 
+        # write certDataString to json file
+        open("../../cert-issuer/data/unsigned_certificates/test1.json", "w").write(
+            newData["certDataString"]
+        )
+        # print("open and read", open("test.json").read())
+
         # get latest nonce
         query_results = Cert.objects.order_by("-nonce")[0]
         latest_nonce = query_results.nonce
@@ -58,7 +64,6 @@ class CertView(viewsets.ModelViewSet):
             )
 
         # POST and update serializer
-        newData = request.POST.copy()
         newData["nonce"] = new_nonce
         newData["txnId"] = txnIdList[0]
         newData["certDataString"] = str(signedCertFile)
