@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -30,13 +31,18 @@ class CertView(viewsets.ModelViewSet):
         )
         output = var.communicate()
         print("output = ", output)
+        logging.INFO("output=%s", str(output))
 
         # get txn id from docker output
-        txnIdList = re.findall(r"txid (.*)\\nINFO", str(output))
+        txnIdList = re.findall(r"txid (.*)\\n\[issue\-cert\]", str(output))
+        # logging.INFO("txnIdList=%s", txnIdList)
         print("txnIdList from log: ", txnIdList)
         if len(txnIdList) == 0 or txnIdList[0]:
             return Response(
-                {"error": "txnId is null, txn failed to broadcast to ethereum"},
+                {
+                    "error": "txnId is null, txn failed to broadcast to ethereum",
+                    "output": str(output),
+                },
                 status=400,
             )
 
