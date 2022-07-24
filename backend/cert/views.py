@@ -46,7 +46,7 @@ class CertView(viewsets.ModelViewSet):
         dockerLogFile = open("/tmp/docker_log.log", "r").read()
         txnIdList = re.findall(r"txid (.*)", str(dockerLogFile))
         print("txnIdList from log: ", txnIdList)
-        if len(txnIdList) == 0 or txnIdList[0]:
+        if len(txnIdList) == 0:
             return Response(
                 {
                     "error": "txnId is null, txn failed to broadcast to ethereum",
