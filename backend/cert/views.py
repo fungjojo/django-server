@@ -20,7 +20,6 @@ class CertView(viewsets.ModelViewSet):
         # reset data
         newData = request.POST.copy()
         if newData["certDataString"] == "reset":
-            print("newData =", newData)
             serializer = self.get_serializer(data=newData)
             serializer.is_valid(raise_exception=True)
             super().perform_create(serializer)
@@ -43,16 +42,16 @@ class CertView(viewsets.ModelViewSet):
         output = var.communicate()
         print("output = ", output)
         # logging.INFO("output=%s", str(output))
-
         # get txn id from docker output
-        txnIdList = re.findall(r"txid (.*)\\n\[issue\-cert\]", str(output))
-        # logging.INFO("txnIdList=%s", txnIdList)
+        dockerLogFile = open("/tmp/docker_log.log", "r").read()
+        txnIdList = re.findall(r"txid (.*)", str(dockerLogFile))
         print("txnIdList from log: ", txnIdList)
         if len(txnIdList) == 0 or txnIdList[0]:
             return Response(
                 {
                     "error": "txnId is null, txn failed to broadcast to ethereum",
-                    "output": str(output),
+                    "dockerLogFile": str(dockerLogFile),
+                    "txnIdList": str(txnIdList),
                 },
                 status=400,
             )
