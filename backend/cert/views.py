@@ -27,7 +27,9 @@ class CertView(viewsets.ModelViewSet):
             return Response(serializer.data, status=200, headers=headers)
 
         # write certDataString to json file
-        open("../../cert-issuer/data/unsigned_certificates/test1.json", "w").write(
+        # ROOT_DIR = os.path.abspath(os.curdir)
+        # open("../../testing.json", "w").write(newData["certDataString"])
+        open("../../ecert-issuer/data/unsigned_certificates/test1.json", "w").write(
             newData["certDataString"]
         )
         # print("open and read", open("test.json").read())
