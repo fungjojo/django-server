@@ -44,6 +44,7 @@ class CertView(viewsets.ModelViewSet):
         # logging.INFO("output=%s", str(output))
         # get txn id from docker output
         dockerLogFile = open("/tmp/docker_log.log", "r").read()
+        signedCertFile = open("/tmp/blockchain_certificates/test1.json", "r").read()
         txnIdList = re.findall(r"txid (.*)", str(dockerLogFile))
         print("txnIdList from log: ", txnIdList)
         if len(txnIdList) == 0:
@@ -60,6 +61,7 @@ class CertView(viewsets.ModelViewSet):
         newData = request.POST.copy()
         newData["nonce"] = new_nonce
         newData["txnId"] = txnIdList[0]
+        newData["certDataString"] = str(signedCertFile)
 
         print("newData =", newData)
         serializer = self.get_serializer(data=newData)
