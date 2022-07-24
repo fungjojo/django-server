@@ -28,20 +28,21 @@ class CertView(viewsets.ModelViewSet):
             return Response(serializer.data, status=200, headers=headers)
 
         # get latest nonce
-        query_results = Cert.objects.latest("nonce")
+        query_results = Cert.objects.order_by("-nonce")[0]
         latest_nonce = query_results.nonce
-        print("latest nonce=%s", latest_nonce)
+        new_nonce = latest_nonce + 1
+        print("latest nonce=", latest_nonce)
 
         # issue cert
         # ROOT_DIR = os.path.abspath(os.curdir)
         # print("ROOT_DIR=%s", ROOT_DIR)
         var = subprocess.Popen(
-            ["sh", "../test.sh", str(latest_nonce)],
+            ["sh", "../test.sh", str(new_nonce)],
             stdout=subprocess.PIPE,
         )
         output = var.communicate()
         print("output = ", output)
-        logging.INFO("output=%s", str(output))
+        # logging.INFO("output=%s", str(output))
 
         # get txn id from docker output
         txnIdList = re.findall(r"txid (.*)\\n\[issue\-cert\]", str(output))
@@ -58,7 +59,7 @@ class CertView(viewsets.ModelViewSet):
 
         # POST and update serializer
         newData = request.POST.copy()
-        newData["nonce"] = latest_nonce + 1
+        newData["nonce"] = new_nonce
         newData["txnId"] = txnIdList[0]
 
         print("newData =", newData)
