@@ -17,6 +17,16 @@ class CertView(viewsets.ModelViewSet):
 
     def create(self, request):
 
+        # reset data
+        newData = request.POST.copy()
+        if newData["certDataString"] == "reset":
+            print("newData =", newData)
+            serializer = self.get_serializer(data=newData)
+            serializer.is_valid(raise_exception=True)
+            super().perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=200, headers=headers)
+
         # get latest nonce
         query_results = Cert.objects.latest("nonce")
         latest_nonce = query_results.nonce
