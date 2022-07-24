@@ -5,7 +5,7 @@ from .models import Cert
 
 
 class CertAdmin(admin.ModelAdmin):
-    list_display = ("id", "certDataString", "lastUpdatedAt", "nonce")
+    list_display = ("id", "certDataString", "lastUpdatedAt", "nonce", "userId", "txnId")
 
 
 # Register your models here.

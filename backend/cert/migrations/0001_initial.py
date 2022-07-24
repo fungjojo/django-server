@@ -7,17 +7,21 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Cert',
+            name="Cert",
             fields=[
-                ('id', models.CharField(max_length=120, primary_key=True, serialize=False)),
-                ('certDataString', models.CharField(max_length=30000)),
-                ('lastUpdatedAt', models.DateTimeField()),
-                ('nonce', models.IntegerField()),
+                (
+                    "id",
+                    models.CharField(max_length=120, primary_key=True, serialize=False),
+                ),
+                ("certDataString", models.CharField(max_length=30000)),
+                ("lastUpdatedAt", models.DateTimeField()),
+                ("userId", models.CharField(max_length=30000)),
+                ("txnId", models.CharField(max_length=30000)),
+                ("nonce", models.IntegerField()),
             ],
         ),
     ]

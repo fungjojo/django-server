@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from .serializers import CertSerializer
 from .models import Cert
 import subprocess
+import re
 
 # import os
 
@@ -28,14 +29,23 @@ class CertView(viewsets.ModelViewSet):
             stdout=subprocess.PIPE,
         )
         output = var.communicate()
-        print("???? output =%s", output)
+        print("output = ", output)
+
+        # get txn id from docker output
+        txnIdList = re.findall(r"txid (.*)\\nINFO", str(output))
+        print("txnIdList from log: ", txnIdList)
+        if len(txnIdList) == 0 or txnIdList[0]:
+            return Response(
+                {"error": "txnId is null, txn failed to broadcast to ethereum"},
+                status=400,
+            )
 
         # POST and update serializer
         newData = request.POST.copy()
-        newData["nonce"] = 11
         newData["nonce"] = latest_nonce + 1
+        newData["txnId"] = txnIdList[0]
 
-        print("???? newData =%s", newData)
+        print("newData =", newData)
         serializer = self.get_serializer(data=newData)
         serializer.is_valid(raise_exception=True)
         super().perform_create(serializer)
