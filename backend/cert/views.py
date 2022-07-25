@@ -18,7 +18,9 @@ class CertView(viewsets.ModelViewSet):
     def get_queryset(self):
         param_userid = self.request.GET.get("userId")
         print("param_userid=", param_userid)
-        return super().get_queryset().filter(userId=param_userid)
+        if param_userid:
+            return super().get_queryset().filter(userId=param_userid)
+        return super().get_queryset().all()
 
     def create(self, request):
 
