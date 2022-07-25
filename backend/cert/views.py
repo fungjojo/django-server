@@ -15,6 +15,11 @@ class CertView(viewsets.ModelViewSet):
     queryset = Cert.objects.all()
     serializer_class = CertSerializer
 
+    def get_queryset(self):
+        param_userid = self.request.GET.get("userId")
+        print("param_userid=", param_userid)
+        return super().get_queryset().filter(userId=param_userid)
+
     def create(self, request):
 
         # reset data
