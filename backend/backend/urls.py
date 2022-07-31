@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from todo import views as todoViews
 from cert import views as certViews
 
 # from django.conf.urls import url
@@ -26,11 +25,9 @@ from django.urls import include, re_path
 # from snippets import views
 
 router = routers.DefaultRouter()
-router.register(r"todos", todoViews.TodoView, "todo")
 router.register(r"certs", certViews.CertView, "cert")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path(r"^certs/$", certViews.CertView.as_view()),
     path("api/", include(router.urls)),
 ]
